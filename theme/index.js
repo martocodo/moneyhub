@@ -29,6 +29,18 @@ export const theme = {
     white: {
       default: "#fff",
     },
+    green: { // success colour grades - light bg - dark text
+      light: "#c2f7e1",
+      dark: "#006b57",
+    },
+    orange: { // update with warning colour grades
+      light: "#c2f7e1",
+      dark: "#006b57",
+    },
+    red: { // update with bad colour grades
+      light: "#c2f7e1",
+      dark: "#006b57",
+    },
   },
   typography: {
     xs: {

@@ -1,9 +1,19 @@
 import PropTypes from "prop-types";
 
 import {
-    StyledList, StyledListItem,StyledItemText,
+    handleColorTypeBackground,
+    handleColorTypeFont,
+    StyledList,
+    StyledListItem,
+    StyledItemText,
 } from "./style";
 
+
+const StyledBadge = styled.div`
+    display: flex;
+    color: ${(props) => handleColorTypeFont(props.status)};
+    background-color: ${(props) => handleColorTypeBackground(props.status)};
+`;
 
 // Account List with loop of items to display
 const AccountList = ({ list }) => (
@@ -12,7 +22,11 @@ const AccountList = ({ list }) => (
             return (
                 <StyledListItem>
                     <StyledItemText>{item.text}</StyledItemText>
-                    
+                    { item.badge &&
+                        <StyledBadge status={item.badge.status}>
+                            {item.badge.value}
+                        </StyledBadge>
+                    }
                 </StyledListItem>
             );
         })}
