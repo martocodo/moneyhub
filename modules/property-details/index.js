@@ -2,9 +2,10 @@
 import { add, format } from "date-fns";
 import React from "react";
 import { Button } from "../../components/button";
-import RowContainer from "../../components/row-container";
+import AccountSection from "../../components/account-section";
+
 import {
-  AccountHeadline, AccountLabel, AccountList, AccountListItem, AccountSection, InfoText, Inset
+  Inset
 } from "./style";
 
 
@@ -33,65 +34,58 @@ const account = {
   updateAfterDays: 30,
 };
 
-const Detail = ({}) => {
+// Add object for all formatted details to be displayed
+const formattedDetails = {
+  recentValuation: new Intl.NumberFormat("en-GB", {
+    style: "currency",
+    currency: "GBP",
+  }).format(account.recentValuation.amount),
+  lastUpdate: new Date(account.lastUpdate),
+}
+
+const Detail = ({ }) => {
   let mortgage;
-  const lastUpdate = new Date(account.lastUpdate);
+
   if (account.associatedMortgages.length) {
     mortgage = account.associatedMortgages[0];
   }
 
   return (
     <Inset>
-      <AccountSection>
-        <AccountLabel>Estimated Value</AccountLabel>
-        <AccountHeadline>
-          {new Intl.NumberFormat("en-GB", {
-            style: "currency",
-            currency: "GBP",
-          }).format(account.recentValuation.amount)}
-        </AccountHeadline>
-        <AccountList>
-          <AccountListItem><InfoText>
-            {`Last updated ${format(lastUpdate, "do MMM yyyy")}`}
-          </InfoText></AccountListItem>
-          <AccountListItem><InfoText>
-            {`Next update ${format(
-              add(lastUpdate, { days: account.updateAfterDays }),
-              "do MMM yyyy"
-            )}`}
-          </InfoText></AccountListItem>
-        </AccountList>
-      </AccountSection>
-      <AccountSection>
-        <AccountLabel>Property details</AccountLabel>
-        <RowContainer>
-          <AccountList>
-            <AccountListItem><InfoText>{account.name}</InfoText></AccountListItem>
-            <AccountListItem><InfoText>{account.bankName}</InfoText></AccountListItem>
-            <AccountListItem><InfoText>{account.postcode}</InfoText></AccountListItem>
-          </AccountList>
-        </RowContainer>
-      </AccountSection>
+      <AccountSection
+        hasHeadline={formattedDetails.recentValuation}
+        label={"Estimated Value"}
+        list={[
+          `Last updated ${format(lastUpdate, "do MMM yyyy")}`,
+          `Next update ${format(
+            add(lastUpdate, { days: account.updateAfterDays }),
+            "do MMM yyyy"
+          )}`
+        ]}
+        />
+      <AccountSection
+        label={"Property details"}
+        hasRow={true}
+        list={[
+          account.name,
+          account.bankName,
+          account.postcode,
+        ]}
+      />
       {mortgage && (
-        <AccountSection>
-          <AccountLabel>Mortgage</AccountLabel>
-          <RowContainer
-            // This is a dummy action
-            onClick={() => alert("You have navigated to the mortgage page")}
-          >
-            <AccountList>
-              <AccountListItem><InfoText>
-                {new Intl.NumberFormat("en-GB", {
-                  style: "currency",
-                  currency: "GBP",
-                }).format(
-                  Math.abs(account.associatedMortgages[0].currentBalance)
-                )}
-              </InfoText></AccountListItem>
-              <AccountListItem><InfoText>{account.associatedMortgages[0].name}</InfoText></AccountListItem>
-            </AccountList>
-          </RowContainer>
-        </AccountSection>
+        <AccountSection
+          label={"Mortgage"}
+          onClick={() => alert("You have navigated to the mortgage page")}
+          list={[
+            new Intl.NumberFormat("en-GB", {
+              style: "currency",
+              currency: "GBP",
+            }).format(
+              Math.abs(account.associatedMortgages[0].currentBalance)
+            ),
+            account.associatedMortgages[0].name,
+          ]}
+        />
       )}
       <Button
         // This is a dummy action
