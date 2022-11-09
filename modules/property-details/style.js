@@ -1,8 +1,7 @@
-import styled, { css } from "styled-components";
-import { theme } from '.../theme';
+import styled from "styled-components";
 
 // Helper functions
-export const handleColorTypeBackground = status => {
+export const handleColorTypeBackground = (status,theme) => {
   switch (status) {
     case "good":
       return theme.colors.green.light;
@@ -15,7 +14,7 @@ export const handleColorTypeBackground = status => {
   }
 };
 
-export const handleColorTypeFont = status => {
+export const handleColorTypeFont = (status,theme) => {
   switch (status) {
     case "good":
       return theme.colors.green.dark;
@@ -42,6 +41,7 @@ export const AccountSectionContainer = styled.div`
 export const StyledList = styled.ul`
   list-style: none;
   padding-left: 0;
+  width: 100%;
 `;
 
 export const StyledListItem = styled.div`

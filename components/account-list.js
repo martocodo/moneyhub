@@ -1,18 +1,25 @@
 import PropTypes from "prop-types";
-
+import styled from "styled-components";
 import {
     handleColorTypeBackground,
     handleColorTypeFont,
     StyledList,
     StyledListItem,
     StyledItemText,
-} from "./style";
+} from "../modules/property-details/style";
 
 
 const StyledBadge = styled.div`
-    display: flex;
-    color: ${(props) => handleColorTypeFont(props.status)};
-    background-color: ${(props) => handleColorTypeBackground(props.status)};
+    display: inline;
+    color: ${(props) => handleColorTypeFont(props.status,props.theme)};
+    background-color: ${(props) => handleColorTypeBackground(props.status,props.theme)};
+    border-radius: 1rem;
+    font-size: ${(props) => props.theme.typography.s.fontSize};
+    font-weight: bold;
+    text-align: center;
+    padding-top: ${(props) => props.theme.space.xs};
+    padding-bottom: ${(props) => props.theme.space.xs};
+    min-width: 10rem;
 `;
 
 // Account List with loop of items to display
@@ -33,7 +40,7 @@ const AccountList = ({ list }) => (
     </StyledList>
 )
 
-RowContainer.propTypes = {
+AccountList.propTypes = {
     list: PropTypes.array.isRequired,
 }
 

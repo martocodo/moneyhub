@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
 
-import AccountList from 'account-list';
+import AccountList from "./account-list";
 import {
     AccountHeadline, AccountLabel, AccountSectionContainer,
-} from "./style";
+} from "../modules/property-details/style";
 
-import RowContainer from 'row-container';
+import RowContainer from './row-container';
 
 // Account Section Container
 const AccountSection = ({ 
