@@ -13,7 +13,7 @@ const AccountSection = ({
     headline,
     label,
     list,
-    onClick,
+    clickAction,
 }) => (
     <AccountSectionContainer>
         <AccountLabel>{label}</AccountLabel>
@@ -21,7 +21,7 @@ const AccountSection = ({
             <AccountHeadline>{headline}</AccountHeadline>
         }
         {hasRow 
-            ? <RowContainer onClick={onClick ? onClick : undefined }><AccountList list={list} /></RowContainer>
+            ? <RowContainer onClick={clickAction ? clickAction : undefined }><AccountList list={list} /></RowContainer>
             : <AccountList list={list} />
         }
     </AccountSectionContainer>
@@ -32,7 +32,7 @@ AccountSection.propTypes = {
     headline: PropTypes.string,
     label: PropTypes.string.isRequired,
     list: PropTypes.array.isRequired,
-    onClick: PropTypes.func,
+    clickAction: PropTypes.func,
 }
 
 export default AccountSection

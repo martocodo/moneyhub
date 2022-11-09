@@ -117,7 +117,8 @@ const Detail = ({ }) => {
       {mortgage && (
         <AccountSection
           label={"Mortgage"}
-          onClick={() => alert("You have navigated to the mortgage page")}
+          hasRow={true}
+          clickAction={() => alert("You have navigated to the mortgage page")}
           list={[
             {
               text: new Intl.NumberFormat("en-GB", {
