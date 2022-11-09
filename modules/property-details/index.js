@@ -33,7 +33,12 @@ const account = {
   lastUpdate: "2020-12-01T08:55:33.421Z",
   updateAfterDays: 30,
 };
-
+// Calculations for dates
+const today = new Date().getFullYear();
+const purchaseDate = Date.parse(account.originalPurchasePriceDate).getFullYear();
+const sincePurchase = account.recentValuation - account.originalPurchasePrice;
+const sincePurchasePercentage = (account.sincePurchase / account.originalPurchasePrice) * 100;
+const annualAppreciation = sincePurchasePercentage / (today - purchaseDate);
 // Add object for all formatted details to be displayed
 const formattedDetails = {
   recentValuation: new Intl.NumberFormat("en-GB", {
@@ -41,6 +46,16 @@ const formattedDetails = {
     currency: "GBP",
   }).format(account.recentValuation.amount),
   lastUpdate: new Date(account.lastUpdate),
+  // New information for valuation changes component
+  originalPrice: new Intl.NumberFormat("en-GB", {
+    style: "currency",
+    currency: "GBP",
+  }).format(account.originalPurchasePrice),
+  purchaseDate: new Date(account.originalPurchasePriceDate), // may need additional validation depending on reliability of data source
+  sincePurchase,
+  sincePurchasePercentage: Math.round(sincePurchasePercentage * 10) / 10, // round to 1 dp and keep as number
+  annualAppreciation: Math.round(annualAppreciation * 10) / 10,  // round to 1 dp and keep as number
+  valuationStatus: ammount.recentValuation.status,
 }
 
 const Detail = ({ }) => {
@@ -56,20 +71,43 @@ const Detail = ({ }) => {
         hasHeadline={formattedDetails.recentValuation}
         label={"Estimated Value"}
         list={[
-          `Last updated ${format(lastUpdate, "do MMM yyyy")}`,
-          `Next update ${format(
-            add(lastUpdate, { days: account.updateAfterDays }),
-            "do MMM yyyy"
-          )}`
+          { text: `Last updated ${format(formattedDetails.lastUpdate, "do MMM yyyy")}` },
+          {
+            text: `Next update ${format(
+              add(formattedDetails.lastUpdate, { days: account.updateAfterDays }),
+              "do MMM yyyy"
+            )}`
+          },
         ]}
-        />
+      />
       <AccountSection
         label={"Property details"}
         hasRow={true}
         list={[
-          account.name,
-          account.bankName,
-          account.postcode,
+          { text: account.name },
+          { text: account.bankName },
+          { text: account.postcode },
+        ]}
+      />
+      <AccountSection
+        label={"Valuation Change"}
+        hasRow={true}
+        list={[
+          { text: `Purchased for ${formattedDetails.originalPrice} in ${format(formattedDetails.purchaseDate, "LLLL yyyy")}` },
+          {
+            text: `Since purchase`,
+            badge: {
+              value: `${formattedDetails.sincePurchase} (${formattedDetails.sincePurchasePercentage})`,
+              status: formattedDetails.valuationStatus
+            }
+          },
+          {
+            text: `Annual appreciation`,
+            badge: {
+              value: `${formattedDetails.annualAppreciation}`,
+              status: formattedDetails.valuationStatus
+            }
+          },
         ]}
       />
       {mortgage && (
@@ -77,13 +115,15 @@ const Detail = ({ }) => {
           label={"Mortgage"}
           onClick={() => alert("You have navigated to the mortgage page")}
           list={[
-            new Intl.NumberFormat("en-GB", {
-              style: "currency",
-              currency: "GBP",
-            }).format(
-              Math.abs(account.associatedMortgages[0].currentBalance)
-            ),
-            account.associatedMortgages[0].name,
+            {
+              text: new Intl.NumberFormat("en-GB", {
+                style: "currency",
+                currency: "GBP",
+              }).format(
+                Math.abs(account.associatedMortgages[0].currentBalance)
+              )
+            },
+            { text: account.associatedMortgages[0].name },
           ]}
         />
       )}

@@ -11,7 +11,8 @@ const AccountList = ({ list }) => (
         { list.map(item => {
             return (
                 <StyledListItem>
-                    <StyledItemText>{item}</StyledItemText>
+                    <StyledItemText>{item.text}</StyledItemText>
+                    
                 </StyledListItem>
             );
         })}
